@@ -6,6 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="62bf700a-d021-475b-bdb9-b940c23cc5a4" name="Changes" comment="duh">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/.eslintrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/.prettierrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/app.controller.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/app.controller.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/app.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/app.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/dto/create-author.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/dto/create-book.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/dto/update-author.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/dto/update-book.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/entities/author.entity.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/entities/book.entity.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/enum/genre.enum.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/src/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/test/app.e2e-spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/smart-app/test/jest-e2e.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,20 +41,20 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/smart-app" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "johnbloemeke"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;johnbloemeke&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/johnblmk/smart.git",
-    "accountId": "5e547d6d-653d-4e27-ac43-91c5424a7657"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/johnblmk/smart.git&quot;,
+    &quot;accountId&quot;: &quot;5e547d6d-653d-4e27-ac43-91c5424a7657&quot;
   }
-}]]></component>
+}</component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\php\php.exe" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -46,21 +64,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.laravel-idea.search-composer-json": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/GitHub/smart",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\GitHub\\smart\\smart-app\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.laravel-idea.search-composer-json&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/GitHub/smart&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\GitHub\\smart\\smart-app\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\GitHub\smart\smart-app\src\dto" />
@@ -103,16 +121,12 @@
     <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="75aebcf9-645b-4145-96bc-a007c82eada3" value="TOOL_WINDOW" />
-      </map>
-    </option>
     <option name="TAB_STATES">
       <map>
         <entry key="75aebcf9-645b-4145-96bc-a007c82eada3">
           <value>
             <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
               <option name="FILTERS">
                 <map>
                   <entry key="structure">
@@ -124,10 +138,14 @@
                   </entry>
                 </map>
               </option>
-              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
             </State>
           </value>
         </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="75aebcf9-645b-4145-96bc-a007c82eada3" value="TOOL_WINDOW" />
       </map>
     </option>
   </component>

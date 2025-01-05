@@ -1,1 +1,1 @@
-# smart test
+# smart

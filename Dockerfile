@@ -10,7 +10,7 @@ WORKDIR /var/smart
 COPY ./smart-server .
 
 ## Install the application's resources
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 ## Build the application
 RUN npm run build

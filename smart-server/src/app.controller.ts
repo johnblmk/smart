@@ -21,16 +21,16 @@ export class AppController {
     }
 
     @Get("quarto")
-    async getQuarto(): Promise<string> {
+    async getQuarto(): Promise<object> {
         let state = await this.appService.getQuarto();
-        return JSON.stringify({state});
+        return {state};
     }
 
     @Post("quarto")
     async postQuarto(
         @Body() updateStateDto: UpdateStateDto,
     ): Promise<string> {
-        return this.appService.postQuarto(updateStateDto.state);
+        return this.appService.postQuarto(JSON.stringify(updateStateDto.state));
     }
 
 

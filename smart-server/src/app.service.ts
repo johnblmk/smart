@@ -106,8 +106,10 @@ export class AppService {
         return this.authorRepository.delete({id});
     }
 
-    async getQuarto(): Promise<string> {
-        return (await this.quartoRepository.findOne({where: {id: 1}})).state;
+    async getQuarto(): Promise<object> {
+        let state = (await this.quartoRepository.findOne({where: {id: 1}})).state;
+
+        return JSON.parse(state);
     }
 
     async postQuarto(state: string): Promise<string> {

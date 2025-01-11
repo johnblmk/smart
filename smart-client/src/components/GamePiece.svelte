@@ -43,7 +43,7 @@
             position: absolute;
             /* Adjust these values as you like for shape/size */
             width: 60%;
-            height: 26px;
+            height: 24px;
               border-top-left-radius: 60%;
               border-top-right-radius: 60%;
             background: inherit; /* Same color as the piece */

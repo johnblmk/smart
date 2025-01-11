@@ -5,31 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="62bf700a-d021-475b-bdb9-b940c23cc5a4" name="Changes" comment="duh">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/.npmrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/app.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/app.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/common/interfaces.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/components/GamePeice.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/components/Shell.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/lib/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/routes/+layout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/routes/+layout.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/routes/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/src/routes/game/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/static/favicon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/svelte.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/smart-client/vite.config.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/.prettierrc" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/README.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/nest-cli.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/package-lock.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/app.controller.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/app.controller.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/app.module.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/app.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/dto/create-author.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/dto/create-book.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/dto/update-author.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/dto/update-book.dto.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/entities/author.entity.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/entities/book.entity.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/enum/genre.enum.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/smart-server/src/main.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/test/app.e2e-spec.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/test/jest-e2e.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/smart-server/tsconfig.build.json" afterDir="false" />
@@ -60,7 +54,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/smart-server" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -117,6 +111,7 @@
       <recent name="C:\GitHub\smart\smart-app\src\enum" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\johnb\Documents\GitHub\smart" />
       <recent name="C:\Users\johnb\Documents\GitHub\smart\smart-server" />
     </key>
   </component>
@@ -141,7 +136,7 @@
       <workItem from="1736099991906" duration="803000" />
       <workItem from="1736101730324" duration="326000" />
       <workItem from="1736102075268" duration="9581000" />
-      <workItem from="1736563407850" duration="3564000" />
+      <workItem from="1736563407850" duration="4628000" />
     </task>
     <task id="LOCAL-00001" summary="duh">
       <option name="closed" value="true" />

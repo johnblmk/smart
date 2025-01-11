@@ -1,32 +1,54 @@
-## Install NodeJS - resources are built using NodeJS packages
-FROM node:18-alpine
+## Use the latest Node.js LTS version for better performance
+FROM node:18-alpine AS build-stage
 
-# Stage 1: Build The Server Application
-
-# Set the working directory to the server application's installation location
+# Set working directory for server application
 WORKDIR /var/smart
 
-## Copy the server source files to the image
-COPY ./smart-server .
+# Copy package.json and package-lock.json files for dependency installation
+COPY ./smart-server/package*.json ./
 
-## Install the application's resources
+# Install server dependencies
 RUN npm install --legacy-peer-deps
 
-## Build the application
+# Copy the server source files
+COPY ./smart-server ./
+
+# Build the server application
 RUN npm run build
 
-# Stage 2: Build The Client Application (SPA)
+# Stage 2: Build the client application
+FROM node:18-alpine AS client-stage
 
-# Set the working directory 
+# Set working directory for client application
 WORKDIR /var/smart/client
 
-# Copy the client source files to the image under the client directory
-COPY ./smart-client .
+# Copy package.json and package-lock.json files for dependency installation
+COPY ./smart-client/package*.json ./
 
-# Install the spa's resources
+# Install client dependencies
 RUN npm install
 
-# Build the spa
+# Copy the client source files
+COPY ./smart-client ./
+
+# Build the client application
 RUN npm run build
 
-CMD ["node", "/var/smart/dist/main.js"]
+# Stage 3: Create the production image
+FROM node:18-alpine AS production-stage
+
+# Set working directory
+WORKDIR /var/smart
+
+# Copy built server files from build-stage
+COPY --from=build-stage /var/smart/dist ./dist
+
+# Copy built client files
+COPY --from=client-stage /var/smart/client/build ./client/build
+
+# Install production dependencies
+COPY ./smart-server/package*.json ./
+RUN npm install --production --legacy-peer-deps
+
+# Define the command to run the application
+CMD ["node", "dist/main.js"]

@@ -7,6 +7,7 @@ import {UpdateBookDto} from "./dto/update-book.dto";
 import {Author} from "./entities/author.entity";
 import {UpdateAuthorDto} from "./dto/update-author.dto";
 import {CreateAuthorDto} from "./dto/create-author.dto";
+import {UpdateStateDto} from "./dto/update-state.dto";
 
 @Controller()
 export class AppController {
@@ -15,6 +16,18 @@ export class AppController {
     @Get("hello")
     getHello(): string {
         return this.appService.getHello();
+    }
+
+    @Get("quarto")
+    async getQuarto(): Promise<string> {
+        return this.appService.getQuarto();
+    }
+
+    @Post("quarto")
+    async postQuarto(
+        @Body() updateStateDto: UpdateStateDto,
+    ): Promise<string> {
+        return this.appService.postQuarto(updateStateDto.state);
     }
 
 

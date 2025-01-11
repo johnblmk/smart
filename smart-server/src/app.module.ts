@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import {Book} from "./entities/book.entity";
 import {Author} from "./entities/author.entity";
 import { ServeStaticModule } from '@nestjs/serve-static';
+import {Quarto} from "./entities/quarto.entity";
 
 
 @Module({
@@ -17,14 +18,14 @@ import { ServeStaticModule } from '@nestjs/serve-static';
         database: "smart",
         username: "root",
         password: 'zest',
-        entities: [Book, Author],
+        entities: [Book, Author, Quarto],
         autoLoadEntities: true,
         synchronize: false
       }),
       TypeOrmModule.forFeature([Book, Author]),
 
       ServeStaticModule.forRoot({
-        rootPath: '/var/silicon/client/dist',
+        rootPath: '/var/smart/client/dist',
       }),
 
   ],

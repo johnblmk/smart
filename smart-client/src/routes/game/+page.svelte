@@ -192,18 +192,24 @@
     }
 
     async function pushToServer() {
+        let data: string = JSON.stringify(
+            {
+                state:
+                    {
+                        unPlayedPieces,
+                        playedPieces,
+                        boardLocations,
+                        currentPlayer,
+                        action
+                    }
+            }
+        )
         await fetch('https://api.sampleapis.com/beers/ale', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                unPlayedPieces,
-                playedPieces,
-                boardLocations,
-                currentPlayer,
-                action
-            })
+            body: data
         });
     }
 

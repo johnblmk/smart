@@ -7,6 +7,7 @@ import {CreateBookDto} from "./dto/create-book.dto";
 import {UpdateBookDto} from "./dto/update-book.dto";
 import {CreateAuthorDto} from "./dto/create-author.dto";
 import {UpdateAuthorDto} from "./dto/update-author.dto";
+import {Quarto} from "./entities/quarto.entity";
 
 @Injectable()
 export class AppService {
@@ -14,10 +15,12 @@ export class AppService {
     constructor(
         @InjectRepository(Book) private readonly bookRepository: Repository<Book>,
         @InjectRepository(Author) private readonly authorRepository: Repository<Author>,
+        @InjectRepository(Author) private readonly quartoRepository: Repository<Quarto>,
     ) {}
 
 
     getHello(): string {
+        console.log('Hello World!')
         return 'Hello World!';
     }
 
@@ -101,6 +104,17 @@ export class AppService {
 
     async deleteAuthor(id: number): Promise<DeleteResult> {
         return this.authorRepository.delete({id});
+    }
+
+    async getQuarto(): Promise<string> {
+        return (await this.quartoRepository.findOne({where: {id: 1}})).state;
+    }
+
+    async postQuarto(state: string): Promise<string> {
+        const quarto = await this.quartoRepository.findOne({where: {id: 1}});
+        quarto.state = state;
+        await this.quartoRepository.save(quarto);
+        return state;
     }
 
 

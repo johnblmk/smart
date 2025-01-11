@@ -152,6 +152,11 @@ export async function playPiece(locationName: string) {
     const canPlay = _selectedPiece && isMyTurn() && isPlacingPhase();
     if (!canPlay) return;
 
+    //additionally check if the location is already occupied
+    const _boardLocations = get(boardLocations);
+    const locationObject = _boardLocations.find(loc => loc.name === locationName);
+    if (!locationObject || locationObject.piece) return; 
+
     boardLocations.update(locations => {
         const locationObject = locations.find(loc => loc.name === locationName);
         if (!locationObject || locationObject.piece) return locations; // can't place if occupied

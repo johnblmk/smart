@@ -20,16 +20,15 @@
 
 <style lang="scss">
   .game-piece {
-    width: 60px;
+    width: 100px;
     margin: 0 auto;
     cursor: pointer;
     position: relative;
-    /* Remove the old border approach and keep a subtle border for shape only */
-    border: 3px solid transparent;
-    border-radius: 8px;
+    border: 5px solid transparent;
+    border-radius: 14px;
     transform-style: preserve-3d;
     transition: transform 0.25s, box-shadow 0.25s;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 
     /*
       We'll use background gradients to hint at a 3D or carved vibe.
@@ -44,26 +43,25 @@
             position: absolute;
             /* Adjust these values as you like for shape/size */
             width: 60%;
-            height: 15px;
+            height: 26px;
               border-top-left-radius: 60%;
               border-top-right-radius: 60%;
             background: inherit; /* Same color as the piece */
-            top: -3px;
+            top: -4px;
             left: 20%;
             transform: translateY(-50%);
         }
 
       &.shape-square {
         &::before {
-          top: -5px;
-          height: 15px;
+          top: -8px;
+          height: 25px;
         }
       }
 
         &.size-tall.shape-circular {
             &::before {
                 top: 0;
-                height: 15px;
             }
         }
 
@@ -86,13 +84,13 @@
     &.selected {
       transform: translateY(-5px) scale(1.12);
       box-shadow:
-              0 0 15px 5px rgba(255, 223, 0, 0.5),  /* gold-ish glow */
-              0 8px 12px rgba(0, 0, 0, 0.4);
+              0 0 30px 10px rgba(255, 223, 0, 0.5),  /* gold-ish glow */
+              0 16px 24px rgba(0, 0, 0, 0.4);
     }
 
     &:hover:not(.placed) {
       transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
     }
 
     /*
@@ -109,10 +107,10 @@
       Height/size variants:
     */
     &.size-short {
-      height: 50px;
+      height: 90px;
     }
     &.size-tall {
-      height: 80px;
+      height: 145px;
     }
 
     /*
@@ -121,7 +119,7 @@
       - shape-circular: top corners heavily rounded
     */
     &.shape-square {
-      border-radius: 3px;
+      border-radius: 6px;
     }
     &.shape-circular {
       border-top-left-radius: 60%;

@@ -57,16 +57,17 @@
     ----------------------------------------------------
   */
   .sidebar {
-    width: 300px;
+    width: 350px;
     background: #4b2e18; /* Dark wood shade */
     padding: 20px;
     border-right: 2px solid #3f210f;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
 
-    h3 {
+    .white-text {
       font-weight: 600;
       color: #f7f0e7;
       margin-bottom: 0.5rem;
+
     }
 
     span {
@@ -116,12 +117,13 @@
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    min-width: 300px;
+    min-width: 600px;
+    min-height: 200px;
     max-width: 420px;
     text-align: center;
 
     h2 {
-      font-size: 1.4rem;
+      font-size: 2.4rem;
       margin-bottom: 15px;
       color: #4b2e18;
     }
@@ -134,7 +136,7 @@
       color: #fef9f2;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 1.5rem;
       font-weight: 500;
       box-shadow: 0 3px 5px rgba(0,0,0,0.2);
       transition: background-color 0.3s ease;
@@ -151,7 +153,7 @@
         ----------------------------------------------------
    */
     .unselected-spot {
-      margin-bottom: 1.5rem;
+      margin-bottom: 3rem;
     }
 
   /*
@@ -165,15 +167,23 @@
   }
 
   .board-location {
-    border: 2px solid #8b5e3c;
-    height: 120px;
+    border: 3px solid #8b5e3c;
+    height: 200px;
     text-align: center;
     background: #e4d1b7;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px 0;
+    margin: 0;
     box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+
+    &.no-left-border {
+      border-left: none;
+    }
+
+    &.no-bottom-border {
+      border-bottom: none;
+    }
 
     &.has-piece {
       background-color: #f0e7d9;
@@ -200,14 +210,39 @@
       cursor: pointer;
     }
   }
+
+  /*
+  A row class for spacing the title area
+  (optional if you want to keep consistent spacing).
+*/
+  .game-title-row {
+    margin-bottom: 1.5rem;
+  }
+
+  /*
+    Title styling to look classy with a bottom border.
+    This example uses a serif font, subtle color,
+    and a “wooden” border color to match existing theme.
+  */
+  .game-title-text {
+    text-align: center;
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-size: 3rem;
+    color: #4b2e18;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #bab5b0;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+  }
+
 </style>
 
 <div class="shell">
     <!-- Sidebar -->
     <div class="sidebar">
         {#if !($showModal || $showChooseNewGameModal)}
-            <h3>{$currentPlayer}'s Turn!</h3>
-            <span>{$action}</span>
+            <h1 class="white-text">{$currentPlayer}'s Turn!</h1>
+            <h5 class="white-text">{$action}</h5>
         {/if}
     </div>
 
@@ -242,15 +277,24 @@
             </div>
         {/if}
 
+        <div class="row game-title-row">
+            <div class="col-2"></div>
+            <div class="col">
+                <h1 class="game-title-text">Quarto</h1>
+            </div>
+            <div class="col-2"></div>
+
+        </div>
+
         <!-- Game Board -->
         {#if !($showModal || $showChooseNewGameModal)}
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-6">
                     <div class="row">
-                        {#each $boardLocations as location (location.name)}
+                        {#each $boardLocations as location, index (location.name)}
                             <div
-                                    class="col-md-3 board-location {location.piece ? 'has-piece' : ''}"
+                                    class="col-md-3 board-location {index % 4 !== 0 ? 'no-left-border' : ''} {index < 12 ? 'no-bottom-border' : ''} {location.piece ? 'has-piece' : ''}"
                                     on:click={() => playPiece(location.name)}
                             >
                                 {#if location.piece}

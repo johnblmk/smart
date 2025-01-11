@@ -68,6 +68,8 @@
 
     let showModal: boolean = $state(true);
 
+    let showChooseNewGameModal: boolean = $state(false);
+
     let fetchingEnabled : boolean = $state(true);
 
 
@@ -75,20 +77,28 @@
 
     let action: "Choose Piece For Next Player"|"Place Your Piece" = $state("Choose Next Piece");
 
+    let startNewGame: boolean = $state(false);
 
-    function init() {
+
+    async function init() {
 
         //randomly assign the first player
         currentPlayer = Math.random() > 0.5 ? "John" : "Sophie";
         action = "Choose Piece For Next Player";
 
-        unPlayedPieces = gamePieces;
-        boardLocations = boardLocationOptions;
-        playedPieces = [];
+        if (startNewGame) {
+            unPlayedPieces = gamePieces;
+            playedPieces = [];
+            boardLocations = boardLocationOptions;
+            await pushToServer();
+        } else {
+            await pullFromServer();
+        }
 
         setInterval(() => {
             pullFromServer();
-        }, 5000);
+        }, 750);
+
     }
 
 
@@ -113,16 +123,28 @@
     }
 
     function isMyTurn() {
-        return currentPlayer === me;
+        return currentPlayer === me || true;
     }
 
+    function isSelectingPhase() {
+        return action === "Choose Piece For Next Player";
+    }
+
+    function isPlacingPhase() {
+        return action === "Place Your Piece";
+    }
 
     function getUnPlayedPiece(name) {
         return unPlayedPieces.find(piece => piece.name === name);
     }
 
+    function getPlayedPiece(name) {
+        return playedPieces.find(piece => piece.name === name);
+    }
+
     async function handleSelecting(name) {
-        if (!isMyTurn()) return;
+        if (!isMyTurn() || !isSelectingPhase()) return;
+
 
         unPlayedPieces = unPlayedPieces.map(piece =>
             piece.name === name
@@ -142,9 +164,10 @@
         fetchingEnabled = true;
     }
 
-    function playPiece(locationName) {
+    async function playPiece(locationName) {
 
-        if (!selectedPiece || !isMyTurn()) return;
+        if (!selectedPiece || !isMyTurn() || !isPlacingPhase()) return;
+
 
         // Find the board location
         let locationObject = boardLocations.find(loc => loc.name === locationName);
@@ -163,7 +186,109 @@
         // Reset selectedPiece
         selectedPiece = null;
 
+
         updateAction();
+
+        fetchingEnabled = false;
+        await pushToServer();
+        //resume fetching from server
+        fetchingEnabled = true;
+
+        if (checkForWin()) {
+            handleWin();
+            return;
+        }
+    }
+
+    function handleWin() {
+        alert(`${currentPlayer} wins!`);
+        // startNewGame = true;
+        // init();
+    }
+
+    function checkSequenceForWin(a: gamePieceOption, b: gamePieceOption, c: gamePieceOption, d: gamePieceOption) {
+        if (!(a && b && c && d)) return false;
+
+
+        console.log($state.snapshot(a));
+        console.log($state.snapshot(b));
+        console.log($state.snapshot(c));
+        console.log($state.snapshot(d));
+
+
+        let sameSize = a.size === b.size && b.size === c.size && c.size === d.size;
+        let sameColor = a.color === b.color && b.color === c.color && c.color === d.color;
+        let sameOutline = a.outline === b.outline && b.outline === c.outline && c.outline === d.outline;
+        let sameShape = a.shape === b.shape && b.shape === c.shape && c.shape === d.shape;
+
+        if (sameSize || sameColor || sameOutline || sameShape) {
+            return true;
+        }
+    }
+
+
+    function checkForWin() {
+        // Check for a win
+        let win = false;
+
+        // Check rows
+        for (let i = 0; i < 4; i++) {
+            let row = boardLocations.filter(loc => loc.row === i);
+            let pieces = row.map(loc => loc.piece).filter(piece => piece !== null);
+            if (pieces.length !== 4) continue;
+            win = checkSequenceForWin(
+                getPlayedPiece(pieces[0]),
+                getPlayedPiece(pieces[1]),
+                getPlayedPiece(pieces[2]),
+                getPlayedPiece(pieces[3])
+            );
+            if (win) break;
+        }
+
+        if (win) {
+            return win;
+        }
+
+        // Check columns
+        for (let i = 0; i < 4; i++) {
+            let col = boardLocations.filter(loc => loc.col === i);
+            let pieces = col.map(loc => loc.piece).filter(piece => piece !== null);
+            if (pieces.length !== 4) continue;
+            win = checkSequenceForWin(
+                getPlayedPiece(pieces[0]),
+                getPlayedPiece(pieces[1]),
+                getPlayedPiece(pieces[2]),
+                getPlayedPiece(pieces[3])
+            );
+            if (win) break;
+        }
+
+        if (win) {
+            return win;
+        }
+
+        //Check diagonal 1
+        win = checkSequenceForWin(
+            getPlayedPiece(boardLocations[0].piece),
+            getPlayedPiece(boardLocations[5].piece),
+            getPlayedPiece(boardLocations[10].piece),
+            getPlayedPiece(boardLocations[15].piece)
+        );
+
+        if (win) {
+            return win;
+        }
+
+        //Check diagonal 2
+        win = checkSequenceForWin(
+            getPlayedPiece(boardLocations[3].piece),
+            getPlayedPiece(boardLocations[6].piece),
+            getPlayedPiece(boardLocations[9].piece),
+            getPlayedPiece(boardLocations[12].piece)
+        );
+
+        return win;
+
     }
 
 
@@ -171,22 +296,36 @@
     function choosePlayer(player: "John" | "Sophie") {
         me = player;
         showModal = false; // Close the modal
+        showChooseNewGameModal = true;
+    }
+
+    function chooseToStartNewGame(decision: boolean) {
+        startNewGame = decision;
+        showChooseNewGameModal = false;
         init(); // Start the game
+
     }
 
     async function pullFromServer() {
-        return;
         if (fetchingEnabled) {
-            let response = await fetch('https://api.sampleapis.com/beers/ale');
-
-            if (response.ok) {
+            let response = await fetch('https://cookiestoeat.com/quarto');
+            if (response.ok && fetchingEnabled) {
                 let data = await response.json();
                 // Update the game state with the data
-                unPlayedPieces = data.unPlayedPieces;
-                playedPieces = data.playedPieces;
-                boardLocations = data.boardLocations;
-                currentPlayer = data.currentPlayer;
-                action = data.action;
+                let state = data.state;
+                unPlayedPieces = state.unPlayedPieces;
+                playedPieces = state.playedPieces;
+                boardLocations = state.boardLocations;
+                selectedPiece = state.selectedPiece;
+                if (action != state.action || currentPlayer != state.currentPlayer) {
+                    alert(2);
+                    checkForWin();
+                }
+                currentPlayer = state.currentPlayer;
+                action = state.action;
+
+            } else if (!response.ok) {
+                alert("HTTP-Error: " + response.status);
             }
         }
     }
@@ -200,11 +339,12 @@
                         playedPieces,
                         boardLocations,
                         currentPlayer,
+                        selectedPiece,
                         action
                     }
             }
         )
-        await fetch('https://api.sampleapis.com/beers/ale', {
+        await fetch('https://cookiestoeat.com/quarto', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -322,7 +462,7 @@
 <div class="shell">
     <!-- Sidebar -->
     <div class="sidebar">
-        {#if !showModal}
+        {#if !(showModal || showChooseNewGameModal)}
             <h3>{currentPlayer}'s Turn!</h3>
             <span>{action}</span>
         {/if}
@@ -340,8 +480,17 @@
             </div>
         {/if}
 
+        {#if showChooseNewGameModal}
+            <div class="mozal-overlay"></div>
+            <div class="mozal">
+                <h2>Do you want to start a new game?</h2>
+                <button on:click={() => chooseToStartNewGame(true)}>Yes</button>
+                <button on:click={() => chooseToStartNewGame(false)}>No</button>
+            </div>
+        {/if}
+
         <!-- Game Board -->
-        {#if !showModal}
+        {#if !(showModal || showChooseNewGameModal)}
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-6">

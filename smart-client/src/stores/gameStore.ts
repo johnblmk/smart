@@ -155,7 +155,7 @@ export async function playPiece(locationName: string) {
     //additionally check if the location is already occupied
     const _boardLocations = get(boardLocations);
     const locationObject = _boardLocations.find(loc => loc.name === locationName);
-    if (!locationObject || locationObject.piece) return; 
+    if (!locationObject || locationObject.piece) return;
 
     boardLocations.update(locations => {
         const locationObject = locations.find(loc => loc.name === locationName);
@@ -277,10 +277,7 @@ function updatePlayer() {
 function isMyTurn(): boolean {
     const _me = get(me);
     const _current = get(currentPlayer);
-    // Return true if the current player is me:
-    // return _current === _me;
-    // For the original code that forced true, just keep:
-    return true;
+    return _current === _me;
 }
 
 function isSelectingPhase(): boolean {

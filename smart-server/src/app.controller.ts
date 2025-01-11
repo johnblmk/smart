@@ -15,12 +15,15 @@ export class AppController {
 
     @Get("hello")
     getHello(): string {
-        return this.appService.getHello();
+        return JSON.stringify({
+            state: this.appService.getHello()
+            });
     }
 
     @Get("quarto")
     async getQuarto(): Promise<string> {
-        return this.appService.getQuarto();
+        let state = await this.appService.getQuarto();
+        return JSON.stringify({state});
     }
 
     @Post("quarto")

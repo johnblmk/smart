@@ -15,7 +15,7 @@ export class AppService {
     constructor(
         @InjectRepository(Book) private readonly bookRepository: Repository<Book>,
         @InjectRepository(Author) private readonly authorRepository: Repository<Author>,
-        @InjectRepository(Author) private readonly quartoRepository: Repository<Quarto>,
+        @InjectRepository(Quarto) private readonly quartoRepository: Repository<Quarto>,
     ) {}
 
 

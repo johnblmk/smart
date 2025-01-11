@@ -1,5 +1,5 @@
 ## Install NodeJS - resources are built using NodeJS packages
-FROM node:16-alpine
+FROM node:18-alpine
 
 # Stage 1: Build The Server Application
 

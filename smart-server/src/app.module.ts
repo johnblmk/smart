@@ -25,7 +25,7 @@ import {Quarto} from "./entities/quarto.entity";
       TypeOrmModule.forFeature([Book, Author, Quarto]),
 
       ServeStaticModule.forRoot({
-        rootPath: '/var/smart/client/dist',
+        rootPath: '/var/smart/client/build',
       }),
 
   ],

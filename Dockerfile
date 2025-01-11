@@ -1,4 +1,4 @@
-## Use the latest Node.js LTS version for better performance
+# Stage 1: Build the server application
 FROM node:18-alpine AS build-stage
 
 # Set working directory for server application
@@ -43,12 +43,15 @@ WORKDIR /var/smart
 # Copy built server files from build-stage
 COPY --from=build-stage /var/smart/dist ./dist
 
-# Copy built client files
+# Copy built client files into the correct directory
 COPY --from=client-stage /var/smart/client/build ./client/build
 
-# Install production dependencies
+# Install production dependencies for the server
 COPY ./smart-server/package*.json ./
 RUN npm install --production --legacy-peer-deps
+
+# Expose the default port (adjust if needed)
+EXPOSE 3000
 
 # Define the command to run the application
 CMD ["node", "dist/main.js"]

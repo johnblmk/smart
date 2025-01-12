@@ -132,11 +132,7 @@ export async function handleSelecting(pieceName: string) {
     updateAction();
     updatePlayer();
 
-    // temporarily stop fetching
-    fetchingEnabled.set(false);
     await pushToServer();
-    // resume fetching
-    fetchingEnabled.set(true);
 }
 
 export function startNewGameFromWin() {
@@ -174,13 +170,13 @@ export async function playPiece(locationName: string) {
 
     updateAction();
 
-    fetchingEnabled.set(false);
-    await pushToServer();
-    fetchingEnabled.set(true);
 
     if (checkForWin()) {
         handleWin();
     }
+
+    await pushToServer();
+
 }
 
 // check if there's a win
@@ -318,6 +314,7 @@ export async function pullFromServer() {
 }
 
 export async function pushToServer() {
+    fetchingEnabled.set(false);
     const dataObj = {
         state: {
             unPlayedPieces: get(unPlayedPieces),
@@ -338,4 +335,5 @@ export async function pushToServer() {
         },
         body: JSON.stringify(dataObj)
     });
+    fetchingEnabled.set(true);
 }

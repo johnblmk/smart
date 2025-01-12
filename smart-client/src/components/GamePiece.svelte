@@ -91,6 +91,13 @@
     &:hover:not(.placed) {
       transform: translateY(-2px) scale(1.05);
       box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+      &.selected {
+        transform: translateY(-5px) scale(1.12);
+        box-shadow:
+                0 0 30px 10px rgba(255, 223, 0, 0.5),  /* gold-ish glow */
+                0 16px 24px rgba(0, 0, 0, 0.4);
+      }
+
     }
 
     /*

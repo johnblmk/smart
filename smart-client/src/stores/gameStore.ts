@@ -306,12 +306,11 @@ export async function pullFromServer() {
         playedPieces.set(state.playedPieces);
         boardLocations.set(state.boardLocations);
         selectedPiece.set(state.selectedPiece);
-
-        if (get(action) !== state.action || get(currentPlayer) !== state.currentPlayer) {
-            // A naive check to see if we should check for win
-            checkForWin();
-        }
         currentPlayer.set(state.currentPlayer);
+
+        showWinModal.set(state.showWinModal);
+        winner.set(state.winner);
+
         action.set(state.action);
     } else if (!response.ok) {
         alert('HTTP-Error: ' + response.status);
@@ -326,7 +325,9 @@ export async function pushToServer() {
             boardLocations: get(boardLocations),
             currentPlayer: get(currentPlayer),
             selectedPiece: get(selectedPiece),
-            action: get(action)
+            action: get(action),
+            showWinModal: get(showWinModal),
+            winner: get(winner),
         }
     };
 

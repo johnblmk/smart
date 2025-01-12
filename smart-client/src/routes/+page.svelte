@@ -122,6 +122,15 @@
     max-width: 420px;
     text-align: center;
 
+    &.transparent-background {
+        background: rgba(255, 255, 255, 0.7);
+
+      //make the button also transparent
+        button {
+          background: rgba(75, 46, 24, 0.7);
+        }
+    }
+
     h2 {
       font-size: 2.4rem;
       margin-bottom: 15px;
@@ -260,7 +269,7 @@
 
         {#if $showWinModal}
             <div class="mozal-overlay"></div>
-            <div class="mozal">
+            <div class="mozal transparent-background">
                 <h2>{$winner} wins!</h2>
                 <button on:click={startNewGameFromWin}>Start New Game</button>
             </div>

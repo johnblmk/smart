@@ -59,7 +59,7 @@ export const winner = writable<string | null>(null);
 
 
 export const currentPlayer = writable<'John' | 'Sophie'>('John');
-export const me = writable<'John' | 'Sophie' | null>(null);
+export const me = writable<'John' | 'Sophie' | 'Local' | null>(null);
 
 export const showModal = writable<boolean>(true);
 export const showChooseNewGameModal = writable<boolean>(false);
@@ -102,7 +102,7 @@ export async function initGame() {
 }
 
 // choose a player from modal
-export function choosePlayer(player: 'John' | 'Sophie') {
+export function choosePlayer(player: 'John' | 'Sophie' | 'Local') {
     me.set(player);
     showModal.set(false);
     showChooseNewGameModal.set(true);
@@ -273,7 +273,7 @@ function updatePlayer() {
 function isMyTurn(): boolean {
     const _me = get(me);
     const _current = get(currentPlayer);
-    return _current === _me;
+    return _current === _me || _me === 'Local'
 }
 
 function isSelectingPhase(): boolean {

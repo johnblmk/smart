@@ -22,7 +22,7 @@
         initGame
     } from '../stores/gameStore';
 
-    let localMe: 'John' | 'Sophie' | null = null;
+    let localMe: 'John' | 'Sophie' | 'Local' | null = null;
 
     // The game starts once we pick a player and choose new or existing game
     // so no immediate call to initGame() until after user chooses
@@ -264,6 +264,7 @@
                 <h2>Choose Your Player</h2>
                 <button on:click={() => choosePlayer('John')}>John</button>
                 <button on:click={() => choosePlayer('Sophie')}>Sophie</button>
+                <button on:click={() => choosePlayer('Local')}>Local Play</button>
             </div>
         {/if}
 

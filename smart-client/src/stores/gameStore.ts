@@ -8,22 +8,22 @@ import type { GamePieceOption, BoardLocation } from '../interfaces';
 // ---------------------------------------------
 
 const initialBoardLocations: BoardLocation[] = [
-    { row: 0, col: 0, name: 'A1', piece: null },
-    { row: 0, col: 1, name: 'A2', piece: null },
-    { row: 0, col: 2, name: 'A3', piece: null },
-    { row: 0, col: 3, name: 'A4', piece: null },
-    { row: 1, col: 0, name: 'B1', piece: null },
-    { row: 1, col: 1, name: 'B2', piece: null },
-    { row: 1, col: 2, name: 'B3', piece: null },
-    { row: 1, col: 3, name: 'B4', piece: null },
-    { row: 2, col: 0, name: 'C1', piece: null },
-    { row: 2, col: 1, name: 'C2', piece: null },
-    { row: 2, col: 2, name: 'C3', piece: null },
-    { row: 2, col: 3, name: 'C4', piece: null },
-    { row: 3, col: 0, name: 'D1', piece: null },
-    { row: 3, col: 1, name: 'D2', piece: null },
-    { row: 3, col: 2, name: 'D3', piece: null },
-    { row: 3, col: 3, name: 'D4', piece: null }
+    { row: 0, col: 0, name: 'A1', piece: null, winner: false },
+    { row: 0, col: 1, name: 'A2', piece: null, winner: false },
+    { row: 0, col: 2, name: 'A3', piece: null, winner: false },
+    { row: 0, col: 3, name: 'A4', piece: null, winner: false },
+    { row: 1, col: 0, name: 'B1', piece: null, winner: false },
+    { row: 1, col: 1, name: 'B2', piece: null, winner: false },
+    { row: 1, col: 2, name: 'B3', piece: null, winner: false },
+    { row: 1, col: 3, name: 'B4', piece: null, winner: false },
+    { row: 2, col: 0, name: 'C1', piece: null, winner: false },
+    { row: 2, col: 1, name: 'C2', piece: null, winner: false },
+    { row: 2, col: 2, name: 'C3', piece: null, winner: false },
+    { row: 2, col: 3, name: 'C4', piece: null, winner: false },
+    { row: 3, col: 0, name: 'D1', piece: null, winner: false },
+    { row: 3, col: 1, name: 'D2', piece: null, winner: false },
+    { row: 3, col: 2, name: 'D3', piece: null, winner: false },
+    { row: 3, col: 3, name: 'D4', piece: null, winner: false }
 ];
 
 const allGamePieces: GamePieceOption[] = [
@@ -61,8 +61,11 @@ export const winner = writable<string | null>(null);
 export const currentPlayer = writable<'John' | 'Sophie'>('John');
 export const me = writable<'John' | 'Sophie' | 'Local' | null>(null);
 
+export const advancedMode = writable<boolean>(false);
+
 export const showModal = writable<boolean>(true);
 export const showChooseNewGameModal = writable<boolean>(false);
+export const showAdvancedModeModal = writable<boolean>(false);
 
 export const fetchingEnabled = writable<boolean>(true);
 export const action = writable<'Choose Piece For Next Player' | 'Place Your Piece'>(
@@ -108,11 +111,23 @@ export function choosePlayer(player: 'John' | 'Sophie' | 'Local') {
     showChooseNewGameModal.set(true);
 }
 
+export function chooseAdvancedMode(advanced: boolean) {
+    advancedMode.set(advanced);
+    showAdvancedModeModal.set(false);
+    initGame();
+
+}
+
 // decide to start new game
 export function chooseToStartNewGame(decision: boolean) {
     startNewGame.set(decision);
     showChooseNewGameModal.set(false);
-    initGame();
+
+    if (decision) {
+        showAdvancedModeModal.set(true);
+    } else {
+        initGame();
+    }
 }
 
 // handle selecting a piece for the other player
@@ -204,7 +219,14 @@ export function checkForWin(): boolean {
             a.outline === b.outline && b.outline === c.outline && c.outline === d.outline;
         const sameShape = a.shape === b.shape && b.shape === c.shape && c.shape === d.shape;
 
-        return sameSize || sameColor || sameOutline || sameShape;
+        if  (sameSize || sameColor || sameOutline || sameShape) {
+            locs.forEach(loc => {
+                if (loc.piece === a.name || loc.piece === b.name || loc.piece === c.name || loc.piece === d.name) {
+                    loc.winner = true;
+                }
+            });
+            return true;
+        }
     }
 
     // rows
@@ -243,6 +265,21 @@ export function checkForWin(): boolean {
         )
     ) {
         return true;
+    }
+
+    //if it is advanced mode, check for 2x2 squares
+    if (get(advancedMode)) {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                const square = [
+                    getPlayedPiece(locs[i * 4 + j].piece),
+                    getPlayedPiece(locs[i * 4 + j + 1].piece),
+                    getPlayedPiece(locs[(i + 1) * 4 + j].piece),
+                    getPlayedPiece(locs[(i + 1) * 4 + j + 1].piece)
+                ];
+                if (checkSequenceForWin(square[0], square[1], square[2], square[3])) return true;
+            }
+        }
     }
 
     return false;
@@ -307,6 +344,8 @@ export async function pullFromServer() {
         showWinModal.set(state.showWinModal);
         winner.set(state.winner);
 
+        advancedMode.set(state.advancedMode);
+
         action.set(state.action);
     } else if (!response.ok) {
         alert('HTTP-Error: ' + response.status);
@@ -325,6 +364,7 @@ export async function pushToServer() {
             action: get(action),
             showWinModal: get(showWinModal),
             winner: get(winner),
+            advancedMode: get(advancedMode)
         }
     };
 

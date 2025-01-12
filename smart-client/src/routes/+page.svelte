@@ -16,6 +16,9 @@
         handleSelecting,
         playPiece,
         showWinModal,
+        showAdvancedModeModal,
+        advancedMode,
+        chooseAdvancedMode,
         startNewGameFromWin,
         winner,
         me,
@@ -195,7 +198,7 @@
     }
 
     &.has-piece {
-      background-color: #f0e7d9;
+      background-color: #e9dcbf;
       cursor: not-allowed;
     }
 
@@ -204,6 +207,11 @@
       cursor: pointer;
       box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
       transition: background-color 0.2s ease;
+    }
+
+    &.winning-piece {
+      cursor: not-allowed;
+      box-shadow: inset 0 0 100px rgba(255, 223, 85, 0.5);
     }
   }
 
@@ -228,6 +236,12 @@
     margin-bottom: 1.5rem;
   }
 
+  .title-subtext {
+    font-size: 1.5rem;
+    color: #4b2e18;
+    font-style: italic;
+  }
+
   /*
     Title styling to look classy with a bottom border.
     This example uses a serif font, subtle color,
@@ -249,7 +263,7 @@
 <div class="shell">
     <!-- Sidebar -->
     <div class="sidebar">
-        {#if !($showModal || $showChooseNewGameModal)}
+        {#if !($showModal || $showChooseNewGameModal || $showAdvancedModeModal)}
             <h1 class="white-text">{$currentPlayer}'s Turn!</h1>
             <h5 class="white-text">{$action}</h5>
         {/if}
@@ -268,6 +282,16 @@
             </div>
         {/if}
 
+        {#if $showAdvancedModeModal}
+            <div class="mozal-overlay"></div>
+            <div class="mozal">
+                <h2>Do you want to play with advanced rules?</h2>
+                <button on:click={() => chooseAdvancedMode(true)}>Yes</button>
+                <button on:click={() => chooseAdvancedMode(false)}>No</button>
+            </div>
+        {/if}
+
+
         {#if $showWinModal}
             <div class="mozal-overlay"></div>
             <div class="mozal transparent-background">
@@ -275,7 +299,6 @@
                 <button on:click={startNewGameFromWin}>Start New Game</button>
             </div>
         {/if}
-
 
         <!-- Modal: new or existing game? -->
         {#if $showChooseNewGameModal}
@@ -290,10 +313,14 @@
         <div class="row game-title-row">
             <div class="col-2"></div>
             <div class="col">
-                <h1 class="game-title-text">Quarto</h1>
+                <h1 class="game-title-text">
+                    Quarto
+                    {#if $advancedMode}
+                        <span class="title-subtext">(Advanced rules)</span>
+                    {/if}
+                </h1>
             </div>
             <div class="col-2"></div>
-
         </div>
 
         <!-- Game Board -->
@@ -304,7 +331,7 @@
                     <div class="row">
                         {#each $boardLocations as location, index (location.name)}
                             <div
-                                    class="col-md-3 board-location {index % 4 !== 0 ? 'no-left-border' : ''} {index < 12 ? 'no-bottom-border' : ''} {location.piece ? 'has-piece' : ''}"
+                                    class="col-md-3 board-location {index % 4 !== 0 ? 'no-left-border' : ''} {location.winner ? 'winning-piece' : ''} {index < 12 ? 'no-bottom-border' : ''} {location.piece ? 'has-piece' : ''}"
                                     on:click={() => playPiece(location.name)}
                             >
                                 {#if location.piece}

@@ -15,4 +15,5 @@ export interface BoardLocation {
     col: number;
     name: string;
     piece?: string | null;
+    winner: boolean;
 }

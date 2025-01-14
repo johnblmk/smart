@@ -126,7 +126,7 @@ export function choosePlayLocal() {
     me.set('Local');
     showGameIdModal.set(false);
     startNewGame.set(true);
-    initGame();
+    showChooseNewGameModal.set(true);
 }
 
 export function chooseGameId(chosenId: string) {

@@ -119,7 +119,7 @@ export async function initGame() {
 export function choosePlayer(player: 'PLayer 1' | 'PLayer 2' | 'Local') {
     me.set(player);
     showModal.set(false);
-    showChooseNewGameModal.set(true);
+    showAdvancedModeModal.set(true);
 }
 
 export function choosePlayLocal() {

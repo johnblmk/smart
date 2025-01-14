@@ -28,7 +28,7 @@
         initGame
     } from '../stores/gameStore';
 
-    let localMe: 'PLayer 1' | 'PLayer 2' | 'Local' | null = null;
+    let localMe: 'Player 1' | 'Player 2' | 'Local' | null = null;
 
     let chosenGameId: string;
 
@@ -318,7 +318,7 @@
             <div class="mozal-overlay"></div>
             <div class="mozal">
                 <h2>Choose Your Player</h2>
-                <button on:click={() => choosePlayer('PLayer 1')}>PLayer 1</button>
+                <button on:click={() => choosePlayer('Player 1')}>PLayer 1</button>
                 <button on:click={() => choosePlayer('Player 2')}>Player 2</button>
             </div>
         {/if}

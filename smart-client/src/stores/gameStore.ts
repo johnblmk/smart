@@ -58,8 +58,8 @@ export const showWinModal = writable(false);
 export const winner = writable<string | null>(null);
 
 
-export const currentPlayer = writable<'PLayer 1' | 'PLayer 2'>('PLayer 1');
-export const me = writable<'PLayer 1' | 'PLayer 2' | 'Local' | null>(null);
+export const currentPlayer = writable<'Player 1' | 'Player 2'>('Player 1');
+export const me = writable<'Player 1' | 'Player 2' | 'Local' | null>(null);
 
 export const gameId = writable<string>('');
 
@@ -89,7 +89,7 @@ export async function initGame() {
     const _action = get(action);
 
     // randomly assign the first player
-    currentPlayer.set(Math.random() > 0.5 ? 'PLayer 1' : 'PLayer 2');
+    currentPlayer.set(Math.random() > 0.5 ? 'Player 1' : 'Player 2');
     action.set('Choose Piece For Next Player');
 
     unPlayedPieces.set(allGamePieces.map(p => ({ ...p, selected: false, placed: false })));
@@ -116,7 +116,7 @@ export async function initGame() {
 }
 
 // choose a player from modal
-export function choosePlayer(player: 'PLayer 1' | 'PLayer 2' | 'Local') {
+export function choosePlayer(player: 'Player 1' | 'Player 2' | 'Local') {
     me.set(player);
     showModal.set(false);
     showChooseNewGameModal.set(true);
@@ -329,7 +329,7 @@ function updateAction() {
 
 function updatePlayer() {
     const _current = get(currentPlayer);
-    currentPlayer.set(_current === 'PLayer 1' ? 'PLayer 1' : 'PLayer 2');
+    currentPlayer.set(_current === 'Player 1' ? 'Player 2' : 'Player 1');
 }
 
 // For now, skipping real multi-user logic. You might customize if needed.

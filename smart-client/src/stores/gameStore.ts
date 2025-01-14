@@ -119,14 +119,14 @@ export async function initGame() {
 export function choosePlayer(player: 'PLayer 1' | 'PLayer 2' | 'Local') {
     me.set(player);
     showModal.set(false);
-    showAdvancedModeModal.set(true);
+    showChooseNewGameModal.set(true);
 }
 
 export function choosePlayLocal() {
     me.set('Local');
     showGameIdModal.set(false);
     startNewGame.set(true);
-    showChooseNewGameModal.set(true);
+    showAdvancedModeModal.set(true);
 }
 
 export function chooseGameId(chosenId: string) {

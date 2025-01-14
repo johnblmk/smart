@@ -10,6 +10,7 @@
         currentPlayer,
         action,
         showModal,
+        showGameIdModal,
         showChooseNewGameModal,
         choosePlayer,
         chooseToStartNewGame,
@@ -21,11 +22,14 @@
         chooseAdvancedMode,
         startNewGameFromWin,
         winner,
+        chooseGameId,
         me,
         initGame
     } from '../stores/gameStore';
 
     let localMe: 'John' | 'Sophie' | 'Local' | null = null;
+
+    let chosenGameId: string;
 
     // The game starts once we pick a player and choose new or existing game
     // so no immediate call to initGame() until after user chooses
@@ -263,7 +267,7 @@
 <div class="shell">
     <!-- Sidebar -->
     <div class="sidebar">
-        {#if !($showModal || $showChooseNewGameModal || $showAdvancedModeModal)}
+        {#if !($showModal || $showChooseNewGameModal || $showAdvancedModeModal || $showGameIdModal)}
             <h1 class="white-text">{$currentPlayer}'s Turn!</h1>
             <h5 class="white-text">{$action}</h5>
         {/if}
@@ -278,7 +282,6 @@
                 <h2>Choose Your Player</h2>
                 <button on:click={() => choosePlayer('John')}>John</button>
                 <button on:click={() => choosePlayer('Sophie')}>Sophie</button>
-                <button on:click={() => choosePlayer('Local')}>Local Play</button>
             </div>
         {/if}
 
@@ -288,6 +291,16 @@
                 <h2>Do you want to play with advanced rules?</h2>
                 <button on:click={() => chooseAdvancedMode(true)}>Yes</button>
                 <button on:click={() => chooseAdvancedMode(false)}>No</button>
+            </div>
+        {/if}
+
+        {#if $showGameIdModal}
+            <div class="mozal-overlay"></div>
+            <div class="mozal">
+                <h2>Game ID: </h2>
+                <input bind:value={chosenGameId} placeholder="Enter Game ID" />
+                <button on:click={() => chooseGameId(chosenGameId)}>Submit</button>
+                <button on:click={() => chooseGameId(chosenGameId)}>Play Local</button>
             </div>
         {/if}
 
@@ -324,7 +337,7 @@
         </div>
 
         <!-- Game Board -->
-        {#if !($showModal || $showChooseNewGameModal)}
+        {#if !($showModal || $showChooseNewGameModal || $showAdvancedModeModal || $showGameIdModal)}
             <div class="row">
                 <div class="col-1"></div>
                 <div class="col-6">

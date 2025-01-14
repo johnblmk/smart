@@ -112,8 +112,22 @@ export class AppService {
         return JSON.parse(state);
     }
 
-    async postQuarto(state: string): Promise<string> {
-        const quarto = await this.quartoRepository.findOne({where: {id: 1}});
+    async getQuartoById(gameId: string): Promise<object> {
+        let quarto = await this.quartoRepository.findOne({where: {gameId}});
+
+        let state = quarto ? quarto.state : '{}';
+
+        return JSON.parse(state);
+    }
+
+    async postQuarto(state: string, gameId: string): Promise<string> {
+        const quarto = await this.quartoRepository.findOne({where: {gameId}});
+
+        if (!quarto) {
+            await this.quartoRepository.save(new Quarto({state, gameId}));
+            return state;
+        }
+
         quarto.state = state;
         await this.quartoRepository.save(quarto);
         return state;

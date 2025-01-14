@@ -13,9 +13,14 @@ export class Quarto {
     @Column({type: "text"})
     public state!: string;
 
+    @Column({ name: 'game_id' })
+    public gameId!: string;
+
+
     constructor(init?: QuartoInit) {
         if (init) {
             this.state = init.state;
+            this.gameId = init.gameId;
         }
     }
 
@@ -24,9 +29,14 @@ export class Quarto {
 
 export interface QuartoInit {
 
-        /**
-        * The state of the game.
-        */
-        readonly state: string;
+    /**
+    * The state of the game.
+    */
+    readonly state: string;
+
+    /**
+     * The game id.
+     */
+    readonly gameId: string;
 
 }

@@ -26,11 +26,19 @@ export class AppController {
         return {state};
     }
 
+    @Get("quarto/:gameId")
+    async getQuartoById(
+        @Param('gameId') gameId: string,
+    ): Promise<object> {
+        let state = await this.appService.getQuartoById(gameId);
+        return {state};
+    }
+
     @Post("quarto")
     async postQuarto(
         @Body() updateStateDto: UpdateStateDto,
     ): Promise<string> {
-        return this.appService.postQuarto(JSON.stringify(updateStateDto.state));
+        return this.appService.postQuarto(JSON.stringify(updateStateDto.state), updateStateDto.gameId);
     }
 
 

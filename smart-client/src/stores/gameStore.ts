@@ -61,9 +61,12 @@ export const winner = writable<string | null>(null);
 export const currentPlayer = writable<'John' | 'Sophie'>('John');
 export const me = writable<'John' | 'Sophie' | 'Local' | null>(null);
 
+export const gameId = writable<string>('');
+
 export const advancedMode = writable<boolean>(false);
 
-export const showModal = writable<boolean>(true);
+export const showGameIdModal = writable<boolean>(true);
+export const showModal = writable<boolean>(false);
 export const showChooseNewGameModal = writable<boolean>(false);
 export const showAdvancedModeModal = writable<boolean>(false);
 
@@ -89,13 +92,18 @@ export async function initGame() {
     currentPlayer.set(Math.random() > 0.5 ? 'John' : 'Sophie');
     action.set('Choose Piece For Next Player');
 
-    if (_startNewGame) {
-        unPlayedPieces.set(allGamePieces.map(p => ({ ...p, selected: false, placed: false })));
-        playedPieces.set([]);
-        boardLocations.set(initialBoardLocations.map(loc => ({ ...loc })));
-        await pushToServer();
-    } else {
-        await pullFromServer();
+    unPlayedPieces.set(allGamePieces.map(p => ({ ...p, selected: false, placed: false })));
+    playedPieces.set([]);
+    boardLocations.set(initialBoardLocations.map(loc => ({ ...loc })));
+
+
+    //if the game is not local
+    if (get(me) !== 'Local') {
+        if (_startNewGame) {
+            await pushToServer();
+        } else {
+            await pullFromServer();
+        }
     }
 
     if (pullInterval) clearInterval(pullInterval);
@@ -111,11 +119,23 @@ export function choosePlayer(player: 'John' | 'Sophie' | 'Local') {
     showChooseNewGameModal.set(true);
 }
 
+export function choosePlayLocal() {
+    me.set('Local');
+    showGameIdModal.set(false);
+    startNewGame.set(true);
+    initGame();
+}
+
+export function chooseGameId(chosenId: string) {
+    gameId.set(chosenId);
+    showGameIdModal.set(false);
+    showModal.set(true);
+}
+
 export function chooseAdvancedMode(advanced: boolean) {
     advancedMode.set(advanced);
     showAdvancedModeModal.set(false);
     initGame();
-
 }
 
 // decide to start new game
@@ -147,7 +167,9 @@ export async function handleSelecting(pieceName: string) {
     updateAction();
     updatePlayer();
 
-    await pushToServer();
+    //if game is not local
+    if (get(me) !== 'Local') await pushToServer();
+
 }
 
 export function startNewGameFromWin() {
@@ -190,7 +212,8 @@ export async function playPiece(locationName: string) {
         handleWin();
     }
 
-    await pushToServer();
+    //if game is not local
+    if (get(me) !== 'Local') await pushToServer();
 
 }
 
@@ -333,6 +356,12 @@ export async function pullFromServer() {
     const response = await fetch('https://cookiestoeat.com/quarto');
     if (response.ok && get(fetchingEnabled)) {
         const data = await response.json();
+
+        if (!data.state) {
+            await pushToServer();
+            return;
+        }
+
         const state = data.state;
 
         unPlayedPieces.set(state.unPlayedPieces);
@@ -365,7 +394,9 @@ export async function pushToServer() {
             showWinModal: get(showWinModal),
             winner: get(winner),
             advancedMode: get(advancedMode)
-        }
+        },
+
+        gameId: get(gameId)
     };
 
     await fetch('https://cookiestoeat.com/quarto', {

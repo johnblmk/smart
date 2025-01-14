@@ -10,6 +10,7 @@
         currentPlayer,
         action,
         showModal,
+        choosePlayLocal,
         showGameIdModal,
         showChooseNewGameModal,
         choosePlayer,
@@ -27,7 +28,7 @@
         initGame
     } from '../stores/gameStore';
 
-    let localMe: 'John' | 'Sophie' | 'Local' | null = null;
+    let localMe: 'PLayer 1' | 'PLayer 2' | 'Local' | null = null;
 
     let chosenGameId: string;
 
@@ -37,6 +38,11 @@
     $: if (localMe !== null) {
         // If you wanted to do something with localMe, do it here
         // But in this example, we're using choosePlayer() directly
+    }
+
+    function pickGameId() {
+        if (!chosenGameId || chosenGameId.length === 0) return;
+        chooseGameId(chosenGameId);
     }
 
 
@@ -144,6 +150,30 @@
       color: #4b2e18;
     }
 
+    .game-id-input {
+      /* Make it consistent with the “wooden” / “warm” palette */
+      display: block;
+      width: 80%;
+      margin: 0 auto 1rem; /* center horizontally, add bottom spacing */
+      padding: 10px;
+      border: 2px solid #764d26; /* warm brownish color */
+      border-radius: 6px;
+      background-color: #fdfaf5;  /* light, off-white background */
+      font-size: 1.1rem;
+      color: #4b2e18;  /* dark wood text color */
+      outline: none;
+      transition: border-color 0.2s ease;
+
+      &::placeholder {
+        color: #b8a898; /* subtle placeholder color */
+      }
+
+      &:focus {
+        border-color: #a26b41; /* highlight on focus */
+      }
+    }
+
+
     button {
       margin: 5px;
       padding: 12px 24px;
@@ -157,7 +187,15 @@
       box-shadow: 0 3px 5px rgba(0,0,0,0.2);
       transition: background-color 0.3s ease;
 
+      &.disabled {
+        background-color: #b8a898;
+        cursor: not-allowed;
+      }
+
       &:hover {
+        &.disabled {
+          background-color: #b8a898;
+        }
         background-color: #5c3b1e;
       }
     }
@@ -280,8 +318,8 @@
             <div class="mozal-overlay"></div>
             <div class="mozal">
                 <h2>Choose Your Player</h2>
-                <button on:click={() => choosePlayer('John')}>John</button>
-                <button on:click={() => choosePlayer('Sophie')}>Sophie</button>
+                <button on:click={() => choosePlayer('PLayer 1')}>PLayer 1</button>
+                <button on:click={() => choosePlayer('Player 2')}>Player 2</button>
             </div>
         {/if}
 
@@ -298,9 +336,9 @@
             <div class="mozal-overlay"></div>
             <div class="mozal">
                 <h2>Game ID: </h2>
-                <input bind:value={chosenGameId} placeholder="Enter Game ID" />
-                <button on:click={() => chooseGameId(chosenGameId)}>Submit</button>
-                <button on:click={() => chooseGameId(chosenGameId)}>Play Local</button>
+                <input class="game-id-input" bind:value={chosenGameId} placeholder="Enter Game ID" />
+                <button class="{(!chosenGameId || chosenGameId.length === 0) ? 'disabled' : '' }" on:click={pickGameId}>Submit</button>
+                <button on:click={choosePlayLocal}>Play Local</button>
             </div>
         {/if}
 

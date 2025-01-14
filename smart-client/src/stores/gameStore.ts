@@ -58,8 +58,8 @@ export const showWinModal = writable(false);
 export const winner = writable<string | null>(null);
 
 
-export const currentPlayer = writable<'John' | 'Sophie'>('John');
-export const me = writable<'John' | 'Sophie' | 'Local' | null>(null);
+export const currentPlayer = writable<'PLayer 1' | 'PLayer 2'>('PLayer 1');
+export const me = writable<'PLayer 1' | 'PLayer 2' | 'Local' | null>(null);
 
 export const gameId = writable<string>('');
 
@@ -89,13 +89,15 @@ export async function initGame() {
     const _action = get(action);
 
     // randomly assign the first player
-    currentPlayer.set(Math.random() > 0.5 ? 'John' : 'Sophie');
+    currentPlayer.set(Math.random() > 0.5 ? 'PLayer 1' : 'PLayer 2');
     action.set('Choose Piece For Next Player');
 
     unPlayedPieces.set(allGamePieces.map(p => ({ ...p, selected: false, placed: false })));
     playedPieces.set([]);
     boardLocations.set(initialBoardLocations.map(loc => ({ ...loc })));
 
+
+    if (pullInterval) clearInterval(pullInterval);
 
     //if the game is not local
     if (get(me) !== 'Local') {
@@ -104,16 +106,17 @@ export async function initGame() {
         } else {
             await pullFromServer();
         }
+
+        pullInterval = setInterval(() => {
+            pullFromServer();
+        }, 500);
+
     }
 
-    if (pullInterval) clearInterval(pullInterval);
-    pullInterval = setInterval(() => {
-        pullFromServer();
-    }, 500);
 }
 
 // choose a player from modal
-export function choosePlayer(player: 'John' | 'Sophie' | 'Local') {
+export function choosePlayer(player: 'PLayer 1' | 'PLayer 2' | 'Local') {
     me.set(player);
     showModal.set(false);
     showChooseNewGameModal.set(true);
@@ -326,7 +329,7 @@ function updateAction() {
 
 function updatePlayer() {
     const _current = get(currentPlayer);
-    currentPlayer.set(_current === 'John' ? 'Sophie' : 'John');
+    currentPlayer.set(_current === 'PLayer 1' ? 'PLayer 1' : 'PLayer 2');
 }
 
 // For now, skipping real multi-user logic. You might customize if needed.
@@ -353,7 +356,7 @@ function isPlacingPhase(): boolean {
 
 export async function pullFromServer() {
     if (!get(fetchingEnabled)) return;
-    const response = await fetch('https://cookiestoeat.com/quarto');
+    const response = await fetch('https://cookiestoeat.com/quarto/' + get(gameId));
     if (response.ok && get(fetchingEnabled)) {
         const data = await response.json();
 

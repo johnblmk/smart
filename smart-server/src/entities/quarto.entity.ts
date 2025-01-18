@@ -17,6 +17,14 @@ export class Quarto {
     public gameId!: string;
 
 
+    @Column({ name: 'player_1_id', type: "varchar" })
+    public player1Id?: string;
+
+    @Column({ name: 'player_2_id', type: "varchar" })
+    public player2Id?: string;
+
+
+
     constructor(init?: QuartoInit) {
         if (init) {
             this.state = init.state;
@@ -38,5 +46,15 @@ export interface QuartoInit {
      * The game id.
      */
     readonly gameId: string;
+
+    /**
+     * The player 1 id.
+     */
+    readonly player1Id?: string;
+
+    /**
+     * The player 2 id.
+     */
+    readonly player2Id?: string;
 
 }

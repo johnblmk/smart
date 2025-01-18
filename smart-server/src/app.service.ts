@@ -106,31 +106,54 @@ export class AppService {
         return this.authorRepository.delete({id});
     }
 
+
+
+
+
+
+
+
+
+
     async getQuarto(): Promise<object> {
         let state = (await this.quartoRepository.findOne({where: {id: 1}})).state;
 
         return JSON.parse(state);
     }
 
-    async getQuartoById(gameId: string): Promise<object> {
+
+
+
+    async getQuartoById(gameId: string, clientId: string): Promise<Quarto|null> {
         let quarto = await this.quartoRepository.findOne({where: {gameId}});
 
-        let state = quarto ? quarto.state : '{}';
+        if (quarto) {
 
-        return JSON.parse(state);
+            if (quarto.player1Id !== null && quarto.player2Id !== null) {
+                if (clientId !== quarto.player1Id && clientId !== quarto.player2Id) {
+                    throw new Error('You are not a player in this game');
+                }
+            }
+
+            return quarto;
+        }
+
+        return null;
+
     }
 
-    async postQuarto(state: string, gameId: string): Promise<string> {
+    async postQuarto(state: string, gameId: string, clientId: string): Promise<Quarto> {
         const quarto = await this.quartoRepository.findOne({where: {gameId}});
 
-        if (!quarto) {
-            await this.quartoRepository.save(new Quarto({state, gameId}));
-            return state;
+        if (!quarto || !quarto.player1Id) {
+            return await this.quartoRepository.save(new Quarto({state, gameId, player1Id: clientId}));
+        } else if (!quarto.player2Id) {
+            quarto.player2Id = clientId;
         }
 
         quarto.state = state;
         await this.quartoRepository.save(quarto);
-        return state;
+        return quarto;
     }
 
 

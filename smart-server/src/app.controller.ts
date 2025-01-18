@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Req} from '@nestjs/common';
 import { AppService } from './app.service';
 import {Book} from "./entities/book.entity";
 import {DeleteResult} from "typeorm";
@@ -8,37 +8,23 @@ import {Author} from "./entities/author.entity";
 import {UpdateAuthorDto} from "./dto/update-author.dto";
 import {CreateAuthorDto} from "./dto/create-author.dto";
 import {UpdateStateDto} from "./dto/update-state.dto";
+import {Request} from "express";
+import {QuartoResponseDto} from "./dto/response/quarto-response.dto";
 
 @Controller()
 export class AppController {
     constructor(private readonly appService: AppService) {}
 
     @Get("hello")
-    getHello(): string {
+    getHello(
+        @Req() req: Request,
+    ): string {
+
+        return req.cookies['clientId'];
+
         return JSON.stringify({
             state: this.appService.getHello()
             });
-    }
-
-    @Get("quarto")
-    async getQuarto(): Promise<object> {
-        let state = await this.appService.getQuarto();
-        return {state};
-    }
-
-    @Get("quarto/:gameId")
-    async getQuartoById(
-        @Param('gameId') gameId: string,
-    ): Promise<object> {
-        let state = await this.appService.getQuartoById(gameId);
-        return {state};
-    }
-
-    @Post("quarto")
-    async postQuarto(
-        @Body() updateStateDto: UpdateStateDto,
-    ): Promise<string> {
-        return this.appService.postQuarto(JSON.stringify(updateStateDto.state), updateStateDto.gameId);
     }
 
 
@@ -116,6 +102,33 @@ export class AppController {
         @Param('authorId', ParseIntPipe) authorId: number,
     ): Promise<DeleteResult> {
         return this.appService.deleteAuthor(authorId);
+    }
+
+
+
+    @Get("quarto/:gameId")
+    async getQuartoById(
+        @Param('gameId') gameId: string,
+        @Req() req: Request,
+    ): Promise<QuartoResponseDto> {
+        let clientId = req.cookies['clientId'];
+
+        let quarto = await this.appService.getQuartoById(gameId, clientId);
+
+        return new QuartoResponseDto(clientId, quarto);
+    }
+
+    @Post("quarto")
+    async postQuarto(
+        @Body() updateStateDto: UpdateStateDto,
+        @Req() req: Request,
+    ): Promise<QuartoResponseDto> {
+        let clientId = req.cookies['clientId'];
+
+        let quarto = await this.appService.postQuarto(JSON.stringify(updateStateDto.state), updateStateDto.gameId, clientId);
+
+        return new QuartoResponseDto(clientId, quarto);
+
     }
 
 

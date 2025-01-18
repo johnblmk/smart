@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {MiddlewareConsumer, Module} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -6,6 +6,7 @@ import {Book} from "./entities/book.entity";
 import {Author} from "./entities/author.entity";
 import { ServeStaticModule } from '@nestjs/serve-static';
 import {Quarto} from "./entities/quarto.entity";
+import {IdentifyMiddleware} from "./middleware/identity.middleware";
 
 
 @Module({
@@ -32,4 +33,8 @@ import {Quarto} from "./entities/quarto.entity";
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(IdentifyMiddleware).forRoutes('*'); // Apply middleware to all routes
+    }
+}
